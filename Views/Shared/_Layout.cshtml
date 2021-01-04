@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+
+    <nav class="navbar navbar-dark bg-light">
+
+        <a class="navbar-brand" color="black" href="#">BOOKSTORE</a>
+        <a class="nav-item " href="~/author">Authors</a>
+        <a class="nav-item " href="~/book">books </a>
+       
+    </nav>
+
+    <div class="container">
+        @RenderBody()
+    </div>
+    @RenderSection("scripts", required:false);
+</body>
+</html>

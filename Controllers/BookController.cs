@@ -69,16 +69,33 @@ namespace bookstore.Controllers
         // GET: BookController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var book = bookRepository.Find(id);
+            var viewmodel = new BookAuthorViewModel
+            {
+                BookId = book.id,
+                BookTitle = book.title,
+                Description = book.description,
+                Authorid = book.author.id,
+                authors = authorRepository.List().ToList()
+
+            };
+            return View(viewmodel);
         }
 
         // POST: BookController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit( BookAuthorViewModel model)
         {
             try
             {
+                Book book = new Book
+                {
+                    title = model.BookTitle,
+                    description = model.Description,
+                    author = authorRepository.Find(model.Authorid)
+                };
+                bookRepository.Update(model.BookId,book);
                 return RedirectToAction(nameof(Index));
             }
             catch

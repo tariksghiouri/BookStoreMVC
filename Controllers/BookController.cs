@@ -37,7 +37,7 @@ namespace bookstore.Controllers
         public ActionResult Create()
         {
             var model = new BookAuthorViewModel {
-                authors = authorRepository.List().ToList()
+                authors = FillSelectList()
             
             };
             return View(model);
@@ -50,6 +50,17 @@ namespace bookstore.Controllers
         {
             try
             {
+                if (model.Authorid == -1)
+                {
+                    ViewBag.Message = "Please select an author !";
+                    var vmodel = new BookAuthorViewModel
+                    {
+                        authors = FillSelectList()
+
+                    };
+                    return View(vmodel);
+                }
+
                 Book book = new Book
                 {
                     title = model.BookTitle,
@@ -75,7 +86,7 @@ namespace bookstore.Controllers
                 BookId = book.id,
                 BookTitle = book.title,
                 Description = book.description,
-                Authorid = book.author.id,
+                //Authorid = book.author.id,
                 authors = authorRepository.List().ToList()
 
             };
@@ -91,6 +102,7 @@ namespace bookstore.Controllers
             {
                 Book book = new Book
                 {
+                    id=model.BookId, 
                     title = model.BookTitle,
                     description = model.Description,
                     author = authorRepository.Find(model.Authorid)
@@ -124,5 +136,14 @@ namespace bookstore.Controllers
                 return View();
             }
         }
+        List<Author> FillSelectList()
+        {
+            var authors = authorRepository.List().ToList();
+            authors.Insert(0, new Author { id = -1, name = "--- Select an author ---" });
+
+            return authors;
+        }
+
     }
+    
 }

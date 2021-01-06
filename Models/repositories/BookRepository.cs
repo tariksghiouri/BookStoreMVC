@@ -8,24 +8,24 @@ namespace bookstore.Models.repositories
     public class BookRepository : IbookStoreRepository<Book>
     {
         List<Book> books;
-        private readonly IbookStoreRepository<Author> authorRepository;
+        //private readonly IbookStoreRepository<Author> authorRepository;
 
         public BookRepository(IbookStoreRepository<Author> authorRepository)
         {
-            this.authorRepository = authorRepository;
+            //this.authorRepository = authorRepository;
             books = new List<Book>()
                 {
                     new Book
                     {
-                        id=1, title="book1",description="description1", author=authorRepository.Find(1)
+                        id=1, title="book1",description="description1" /*author=authorRepository.Find(1)*/
                     },
                     new Book
                     {
-                        id=2, title="book2",description="description2",author=authorRepository.Find(2)
+                        id=2, title="book2",description="description2" /*author=authorRepository.Find(2)*/
                     },
                     new Book
                     {
-                        id=3, title="book3",description="description3",author=authorRepository.Find(3)
+                        id=3, title="book3",description="description3" /*author=authorRepository.Find(3)*/
                     },
                 };
         }

@@ -14,7 +14,7 @@ namespace bookstore.Controllers
     {
         private readonly IbookStoreRepository<Book> bookRepository;
         private readonly IbookStoreRepository<Author> authorRepository;
-        public BookController(IbookStoreRepository<Book> bookRepository,IbookStoreRepository<Author> authorRepository)
+        public BookController(IbookStoreRepository  <Book> bookRepository,IbookStoreRepository<Author> authorRepository)
         {
             this.bookRepository = bookRepository; 
             this.authorRepository = authorRepository; 

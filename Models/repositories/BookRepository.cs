@@ -31,6 +31,7 @@ namespace bookstore.Models.repositories
         }
         public void Add(Book entity)
         {
+            entity.id = books.Max(b => b.id)+ 1;
             books.Add(entity);
         }
 

@@ -17,15 +17,15 @@ namespace bookstore.Models.repositories
                 {
                     new Book
                     {
-                        id=1, title="book1",description="description1" /*author=authorRepository.Find(1)*/
+                        id=1, title="book1",description="description1" ,author=new Author(), ImgUrl="book1.jpg" /*author=authorRepository.Find(1)*/
                     },
                     new Book
                     {
-                        id=2, title="book2",description="description2" /*author=authorRepository.Find(2)*/
+                        id=2, title="book2",description="description2", author=new Author(), ImgUrl="book2.jpg" /*author=authorRepository.Find(2)*/
                     },
                     new Book
                     {
-                        id=3, title="book3",description="description3" /*author=authorRepository.Find(3)*/
+                        id=3, title="book3",description="description3" ,author=new Author(), ImgUrl="book3.jpg"/*author=authorRepository.Find(3)*/
                     },
                 };
         }
@@ -61,6 +61,7 @@ namespace bookstore.Models.repositories
             book.author = newbook.author;
             book.description = newbook.description;
             book.id = newbook.id;
+            book.ImgUrl = newbook.ImgUrl;
 
 
         }

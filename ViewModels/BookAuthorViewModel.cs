@@ -1,4 +1,5 @@
 ﻿using bookstore.Models;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -20,6 +21,10 @@ namespace bookstore.ViewModels
         public string Description { get; set; }
         
         public int Authorid { get; set; }
+
+        public IFormFile File { get; set; }
         public List<Author> authors { get; set; }
+
+        public string Imgurl { get; set; }
     }
 }

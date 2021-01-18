@@ -11,5 +11,6 @@ namespace bookstore.Models
         public String title { get; set; }
         public String description { get; set; }
         public Author author { get; set; }
+        public string  ImgUrl { get; set; }
     }
 }

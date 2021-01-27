@@ -17,8 +17,8 @@ namespace bookstore.Models.repositories
             new Author{ id=2,name="khalil"},
             new Author{ id=3,name="hamid"},
         };
-                
-    }
+
+        }
         public void Add(Author entity)
         {
             entity.id = Authors.Max(b => b.id) + 1;
@@ -46,9 +46,9 @@ namespace bookstore.Models.repositories
 
         public void Update(int id, Author newAuthor)
         {
-            var author= Find(id);
+            var author = Find(id);
             //author.id=newAuthor.id;
-            author.name=newAuthor.name;
+            author.name = newAuthor.name;
 
         }
     }

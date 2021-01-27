@@ -64,15 +64,8 @@ namespace bookstore.Controllers
                         
                         return View(GetAllAuthors());
                         }
-                    string filename = string.Empty;
-                    if (model.File != null)
-                    {
-                        string uploads = Path.Combine(hosting.WebRootPath, "uploads");
-                        filename = model.File.FileName;
-                        string fullPath = Path.Combine(uploads, filename);
-                        model.File.CopyTo(new FileStream(fullPath, FileMode.Create));
-
-                    }
+                    string filename = UploadFile(model.File)?? string.Empty;
+                   
                    
 
                     Book book = new Book
@@ -98,63 +91,122 @@ namespace bookstore.Controllers
            
         }
 
-        // GET: BookController/Edit/5
+
+
+
+
+        //edits
+
+
+
+
         public ActionResult Edit(int id)
         {
             var book = bookRepository.Find(id);
-            var viewmodel = new BookAuthorViewModel
+            //var authorId = book.author.id == null ? book.author.id = 0 : book.author.id;
+
+            var viewModel = new BookAuthorViewModel
             {
                 BookId = book.id,
                 BookTitle = book.title,
                 Description = book.description,
-                //Authorid = book.author.id,
+                //Authorid = authorId,
                 authors = authorRepository.List().ToList(),
                 Imgurl = book.ImgUrl
-
             };
-            return View(viewmodel);
+
+            return View(viewModel);
         }
 
-        // POST: BookController/Edit/5
+        // POST: Book/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit( BookAuthorViewModel model)
+        public ActionResult Edit(BookAuthorViewModel viewModel)
         {
             try
             {
-                string filename = string.Empty;
-                if (model.File != null)
-                {
-                    string uploads = Path.Combine(hosting.WebRootPath, "uploads");
-                     filename = model.File.FileName;
-                    string fullPath = Path.Combine(uploads, filename);
-                    //deleting the old image
-                    string oldFilename = bookRepository.Find(model.BookId).ImgUrl;
-                    string oldFilePath = Path.Combine(uploads, oldFilename);
-                    if (fullPath != oldFilePath)
-                    {
-                        System.IO.File.Delete(oldFilePath);
-                        //saving the new image
+                // TODO: Add update logic here
+                string fileName = UploadFile(viewModel.File, viewModel.Imgurl);
 
-                        model.File.CopyTo(new FileStream(fullPath, FileMode.Create));
-                    }
-                }
+                var author = authorRepository.Find(viewModel.Authorid);
                 Book book = new Book
                 {
-                    id=model.BookId, 
-                    title = model.BookTitle,
-                    description = model.Description,
-                    author = authorRepository.Find(model.Authorid),
-                    ImgUrl=filename
+                    id = viewModel.BookId,
+                    title = viewModel.BookTitle,
+                    description = viewModel.Description,
+                    author = author,
+                    ImgUrl = fileName
                 };
-                bookRepository.Update(model.BookId,book);
+
+                bookRepository.Update(viewModel.BookId, book);
+
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception)
             {
                 return View();
             }
         }
+
+
+        //edits
+
+
+
+
+
+
+        //// GET: BookController/Edit/5
+        //public ActionResult Edit(int id)
+        //{
+        //    var book = bookRepository.Find(id);
+        //    var authorId = book.author.id;
+        //    var viewmodel = new BookAuthorViewModel
+        //    {
+        //        BookId = book.id,
+        //        BookTitle = book.title,
+        //        Description = book.description,
+        //        Authorid = authorId,
+        //        authors = authorRepository.List().ToList(),
+        //        Imgurl = book.ImgUrl
+
+        //    };
+        //    return View(viewmodel);
+        //}
+
+        //// POST: BookController/Edit/5
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Edit( BookAuthorViewModel model)
+        //{
+        //    try
+        //    {
+        //        string filename = UploadFile(model.File,model.Imgurl);
+        //        var author = authorRepository.Find(model.Authorid  );
+
+        //        Book book = new Book
+        //        {
+        //            id=model.BookId, 
+        //            title = model.BookTitle,
+        //            description = model.Description,
+        //            author =author,
+        //            ImgUrl=filename
+        //        };
+        //        bookRepository.Update(model.BookId, book);
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    catch
+        //    {
+        //        return View();
+        //    }
+        //}
+
+
+
+
+
+
+
 
         // GET: BookController/Delete/5
         public ActionResult Delete(int id)
@@ -194,6 +246,43 @@ namespace bookstore.Controllers
             authors.Insert(0, new Author { id = -1, name = "--- Select an author ---" });
 
             return authors;
+        }
+
+
+        string UploadFile(IFormFile file)
+        {
+            if (file != null)
+            {
+                string uploads = Path.Combine(hosting.WebRootPath, "uploads");
+                
+                string fullPath = Path.Combine(uploads, file.FileName);
+                file.CopyTo(new FileStream(fullPath, FileMode.Create));
+                return file.FileName;
+            }
+            return null;
+        }
+        
+        
+        string UploadFile(IFormFile file, string imgurl)
+        {
+            if (file != null)
+            {
+                string uploads = Path.Combine(hosting.WebRootPath, "uploads");
+                string newPath = Path.Combine(uploads, file.FileName);
+                string oldFilePath = Path.Combine(uploads, imgurl);
+                // checking if both the files are the same
+                if (newPath != oldFilePath)
+                {
+                    //deleting the old image
+                    System.IO.File.Delete(oldFilePath);
+                    //saving the new image
+
+                    file.CopyTo(new FileStream(newPath, FileMode.Create));
+                }
+                return file.FileName;
+            }
+
+            return imgurl;
         }
 
     }

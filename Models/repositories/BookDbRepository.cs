@@ -50,5 +50,15 @@ namespace BookStoreMVC.Models.repositories
             database.SaveChanges();
 
         }
+
+        public  List<Book> Search( string keyword)
+        {
+            var result = database.books.Include(a => a.author)
+                .Where(b => b.title.Contains(keyword) ||
+                            b.description.Contains(keyword) ||
+                            b.author.name.Contains(keyword));
+            return result.ToList();
+
+        }
     }
 }

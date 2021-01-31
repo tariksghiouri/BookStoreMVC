@@ -57,14 +57,16 @@ namespace bookstore.Controllers
             if (ModelState.IsValid)
 
             {
-                try
-                {       if (model.Authorid == -1)
+                try 
+                { 
+                    string filename = UploadFile(model.File)?? string.Empty;
+                     if (model.Authorid == -1)
                         {
                         ViewBag.Message = "Please select an author !";
                         
                         return View(GetAllAuthors());
                         }
-                    string filename = UploadFile(model.File)?? string.Empty;
+                    
                    
                    
 
@@ -103,7 +105,7 @@ namespace bookstore.Controllers
         public ActionResult Edit(int id)
         {
             var book = bookRepository.Find(id);
-            //var authorId = book.author.id == null ? book.author.id = 0 : book.author.id;
+            //  var authorId = book.author.id == null ? book.author.id = 0 : book.author.id;
 
             var viewModel = new BookAuthorViewModel
             {
@@ -285,6 +287,14 @@ namespace bookstore.Controllers
             return imgurl;
         }
 
+    
+        public ActionResult Search( string keyword)
+        {
+            var result = bookRepository.Search(keyword);
+            return View("Index",result);
+
+        }
+        
     }
     
 }

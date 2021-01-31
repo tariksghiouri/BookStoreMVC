@@ -42,6 +42,11 @@ namespace BookStoreMVC.Models.repositories
             return database.authors.ToList();
         }
 
+        public List<Author> Search(string keyword)
+        {
+            return database.authors.Where(a => a.name.Contains(keyword)).ToList();
+        }
+
         public void Update(int id, Author newAuthor)
         {
             database.Update(newAuthor);

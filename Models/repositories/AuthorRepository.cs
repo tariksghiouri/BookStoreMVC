@@ -44,12 +44,22 @@ namespace bookstore.Models.repositories
             return Authors;
         }
 
+        public List<Book> Search(string keyword)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Update(int id, Author newAuthor)
         {
             var author = Find(id);
             //author.id=newAuthor.id;
             author.name = newAuthor.name;
 
+        }
+
+        List<Author> IbookStoreRepository<Author>.Search(string keyword)
+        {
+            return Authors.Where(a => a.name.Contains(keyword)).ToList();
         }
     }
 }
